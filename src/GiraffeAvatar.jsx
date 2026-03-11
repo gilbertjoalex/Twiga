@@ -217,6 +217,7 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   });
 
   return (
+    
     <div onClick={handleBackgroundClick} style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', cursor: cursorImgUrl ? 'none' : 'auto' }}>
       {cursorImgUrl && (
         <img src={cursorImgUrl} alt="cursor" style={{ position: 'fixed', left: mousePos.x, top: mousePos.y, width: '46px', pointerEvents: 'none', zIndex: 9999, transform: 'translate(-50%, -50%)' }} />
@@ -224,49 +225,68 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
       <div style={{ width: '150%', height: '70%', transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)', transformOrigin: `${zoomPos.x}px ${zoomPos.y}px`, transform: isZoomed ? 'scale(1.2)' : 'scale(1)' }}>
         <canvas ref={canvasRef} style={{ display: 'block' }} />
         {isZoomed && (
-          <div style={{
-            position: 'absolute', top: zoomPos.y, left: zoomPos.x, transform: 'scale(0.6) translate(-90%, -90%)', 
-            pointerEvents: 'auto', display: 'flex', gap: '275px', padding: '130px', borderRadius: '250px', zIndex: 9999
-          }}>
-            <button 
+  <div style={{
+    position: 'fixed', // Change to fixed to fill the viewport
+    top: -200,
+    left: -350,
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'none', // Centers the menu horizontally
+    alignItems: 'center',     // Centers the menu vertically
+    backgroundColor: 'none', // Optional: Dim the background
+    zIndex: 9999,
+    pointerEvents: 'auto'
+  }}>
+     
+    <div style={{
+      position: 'relative',
+      background: 'none', // Give the menu a background
+      padding: '200px',
+      borderRadius: '10px',
+      display: 'flex',
+      gap: '0px',
+      maxWidth: '120vw', // Ensures it never exceeds screen width
+      maxHeight: '120vh', // Ensures it never exceeds screen height
+      overflow: 'auto'   // Adds scroll if menu is too tall
+    }}>
+    
+ 
+</div>
+            <div style={{ margin: '50px 0 0px 20px', display: 'flex', flexDirection: 'column', paddingTop: '40px', gap: '0px', color: '#3d2616' }}>
+              <button 
   onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
-  style={{
-    position: 'absolute',
-    top: '20px',
-    right: '20px',
-    width: '40px',
-    height: '40px',
-    background: 'red',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 0,
-    zIndex: 10000,
-    display: 'flex',           // Added
-    justifyContent: 'center',  // Added
-    alignItems: 'center'       // Added
+  style={{ 
+    background: 'transparent', 
+    border: 'none', 
+    padding: 0, 
+    cursor: 'pointer' 
   }}
 >
-  <div style={{ position: 'relative', width: '25px', height: '25px' }}>
-    <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '11px', left: '0px', transform: 'rotate(45deg)' }} />
-    <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '11px', left: '0px', transform: 'rotate(-45deg)' }} />
-  </div>
-</button>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: '#3d2616' }}>
-              <a href="/about" style={{ display: 'block', margin: 0 }}><img src="/title4.png" alt="About" style={{ width: '315px', height: 'auto' }} /></a>
-              <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
-              <div style={{ marginTop: '40px', background: 'rgba(255,255,255,0.85)', borderRadius: '12px', color: '#552f1a', textAlign: 'center', pointerEvents: 'none'}}>
-                <div style={{ fontSize: '1.1rem' }}>Spots: {fullSpots.length}</div>
-                <div style={{ fontSize: '0.8rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
+      <img src="/title7.png" alt="About" style={{margin: '0px 0 -35px 0',width: '315px', height: 'auto' }} /></button>
+              <a href="/" style={{ display: 'block' }}> 
+              <div style={{ margin: '10px 20px 0px 40px', fontWeight: 'bold', fontSize: '1rem' }}>About Us</div>
+              </a>
+              <a href="/" style={{ display: 'block'}}> 
+              <div style={{ margin: '10px 20px 50px 40px', fontWeight: 'bold', fontSize: '1rem' }}>Profile</div>
+              </a>
+              
+              <div style={{background: 'rgba(234, 209, 109, 0.53)', borderRadius: '12px', color: '#552f1a', textAlign: 'left', pointerEvents: 'none', width: 'fit-content', margin: '40px 0 0 40px', padding: '2px 2px'}}>
+                <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>Spots: {fullSpots.length}</div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.6rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', justifyContent: 'center', paddingBottom:'15px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', padding: '0px', paddingTop:'100px'}}>
               {/* "Listen" Word Hyperlink [cite: 99] */}
               <Link to="/girafforum" onClick={(e) => e.stopPropagation()} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div style={{ fontSize:'1.8rem', padding: '15px 25px', borderRadius: '8px', cursor: 'pointer' }}>Listen</div>
+                <div style={{margin:'40px 40px 0 60px', background: 'rgba(234, 231, 222, 0.41)', fontSize:'1.8rem', padding: '0px 10px', borderRadius: '8px', cursor: 'pointer'}}>Listen</div>
               </Link>
-              <div style={{ fontSize:'1.8rem', padding: '15px 25px', borderRadius: '8px', cursor: 'pointer' }}>Speak</div>
+              <div style={{ margin:'40px 40px 0 60px', background: 'rgba(234, 231, 222, 0.41)', fontSize:'1.8rem', padding: '0px 10px', borderRadius: '8px', cursor: 'pointer' }}>Speak</div>
+            
             </div>
           </div>
+        
+    
         )}
       </div>
       <div style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', gap: '12px', zIndex: 10 }}>
@@ -275,6 +295,7 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
         <button onClick={(e) => { e.stopPropagation(); setFullSpots([]); setDots([]); }} style={btnStyle('#8b0000')}>Clear All</button>
       </div>
     </div>
+    
   );
 };
 
