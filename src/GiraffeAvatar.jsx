@@ -228,12 +228,29 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
             position: 'absolute', top: zoomPos.y, left: zoomPos.x, transform: 'scale(0.6) translate(-90%, -90%)', 
             pointerEvents: 'auto', display: 'flex', gap: '275px', padding: '130px', borderRadius: '250px', zIndex: 9999
           }}>
-            <button onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }} style={{ position: 'absolute', top: '20px', right: '20px', width: '40px', height: '40px', background: 'red', border: 'none', cursor: 'pointer', zIndex: 10000 }}>
-              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(45deg)' }} />
-                <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(-45deg)' }} />
-              </div>
-            </button>
+            <button 
+  onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
+  style={{
+    position: 'absolute',
+    top: '20px',
+    right: '20px',
+    width: '40px',
+    height: '40px',
+    background: 'red',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+    zIndex: 10000,
+    display: 'flex',           // Added
+    justifyContent: 'center',  // Added
+    alignItems: 'center'       // Added
+  }}
+>
+  <div style={{ position: 'relative', width: '25px', height: '25px' }}>
+    <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '11px', left: '0px', transform: 'rotate(45deg)' }} />
+    <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '11px', left: '0px', transform: 'rotate(-45deg)' }} />
+  </div>
+</button>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: '#3d2616' }}>
               <a href="/about" style={{ display: 'block', margin: 0 }}><img src="/title4.png" alt="About" style={{ width: '315px', height: 'auto' }} /></a>
               <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
