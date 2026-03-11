@@ -227,11 +227,11 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
 
             {/* Main Content with Zoom Transition */}
             <div style={{
-                width: '100%',
-                height: '100%',
+                width: '150%',
+                height: '70%',
                 transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)',
                 transformOrigin: `${zoomPos.x}px ${zoomPos.y}px`,
-                transform: isZoomed ? 'scale(1.5)' : 'scale(1)'
+                transform: isZoomed ? 'scale(1.2)' : 'scale(1)'
             }}>
                 <canvas ref={canvasRef} style={{ display: 'block' }} />
 
@@ -256,7 +256,7 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
       <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
       
       {/* Moved Counter Here */}
-      <div style={{ marginTop: '20px', background: 'rgba(255,255,255,0.85)', paddingTop: '10px', borderRadius: '12px', color: '#552f1a', textAlign: 'left', pointerEvents: 'none'}}>
+      <div style={{ marginTop: '40px', background: 'rgba(255,255,255,0.85)', borderRadius: '12px', color: '#552f1a', textAlign: 'center', pointerEvents: 'none'}}>
         <div style={{ fontSize: '1.1rem' }}>Spots: {fullSpots.length}</div>
         <div style={{ fontSize: '0.8rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
       </div>
@@ -264,10 +264,10 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
 
     {/* RIGHT COLUMN: Interactive Tools */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', justifyContent: 'center' }}>
-      {['Express Need', 'Request', 'Thank'].map((item) => (
+      {['GIRAFFORUM', 'Express Need', 'Request', 'Thank'].map((item) => (
         <div key={item} style={{ 
           padding: '10px 20px', 
-          border: '1px solid #3d2616', 
+          //border: '1px solid #3d2616', 
           borderRadius: '8px', 
           cursor: 'pointer' 
         }}>
