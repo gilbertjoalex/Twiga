@@ -1,8 +1,16 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Girafforum from './Girafforum';
+
+/**
+ * NEW COMPONENT: Girafforum
+ * Replicates the background and adds the centered heading and top-left link back home.
+ */
+
 
 const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) => {
   const canvasRef = useRef(null);
-  const zoomMaskCanvasRef = useRef(null); // Ref for maskmouth.png [cite: 1]
+  const zoomMaskCanvasRef = useRef(null);
   const maskCanvasRef = useRef(null);
   const [dots, setDots] = useState([]);
   const [fullSpots, setFullSpots] = useState([]);
@@ -21,35 +29,26 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   const zoomMaskImgRef = useRef(new Image());
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
+    const handleMouseMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Helper to draw mask onto a canvas [cite: 1]
   const createMaskCanvas = (img) => {
-  const mCanvas = document.createElement('canvas');
-  // MUST match the dimensions of the main visible canvas exactly
-  mCanvas.width = canvasRef.current.width; 
-  mCanvas.height = canvasRef.current.height;
-  
-  const ctx = mCanvas.getContext('2d');
-  
-  // Use 'contain' logic to match how you are drawing the background
-  const scale = Math.max(mCanvas.width / img.naturalWidth, mCanvas.height / img.naturalHeight);
-  const x = (mCanvas.width / 2) - (img.naturalWidth / 2) * scale;
-  const y = (mCanvas.height / 2) - (img.naturalHeight / 2) * scale;
-  
-  ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
-  return mCanvas;
-};
+    const mCanvas = document.createElement('canvas');
+    mCanvas.width = canvasRef.current.width;
+    mCanvas.height = canvasRef.current.height;
+    const ctx = mCanvas.getContext('2d');
+    const scale = Math.max(mCanvas.width / img.naturalWidth, mCanvas.height / img.naturalHeight);
+    const x = (mCanvas.width / 2) - (img.naturalWidth / 2) * scale;
+    const y = (mCanvas.height / 2) - (img.naturalHeight / 2) * scale;
+    ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
+    return mCanvas;
+  };
 
   useEffect(() => {
     let loadedCount = 0;
     const totalToLoad = backgroundUrl ? 3 : 2;
-
     const onResourceLoad = () => {
       loadedCount++;
       if (loadedCount >= totalToLoad) {
@@ -57,27 +56,22 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
         if (!canvas) return;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         maskCanvasRef.current = createMaskCanvas(imgRef.current);
         zoomMaskCanvasRef.current = createMaskCanvas(zoomMaskImgRef.current);
         setImageLoaded(true);
       }
     };
-
     imgRef.current.src = maskUrl;
     imgRef.current.crossOrigin = "Anonymous";
     imgRef.current.onload = onResourceLoad;
-
     zoomMaskImgRef.current.src = zoomMaskUrl;
     zoomMaskImgRef.current.crossOrigin = "Anonymous";
     zoomMaskImgRef.current.onload = onResourceLoad;
-
     if (backgroundUrl) {
       bgRef.current.src = backgroundUrl;
       bgRef.current.crossOrigin = "Anonymous";
       bgRef.current.onload = onResourceLoad;
     }
-
     const handleResize = () => onResourceLoad();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -102,20 +96,11 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   };
 
   const isAreaOnZoomMask = (x, y) => {
-  if (!zoomMaskCanvasRef.current) return false;
-  
-  // We need to check the pixel at the CURRENT mouse position 
-  // scaled to the zoomMaskCanvas dimensions.
-  const ctx = zoomMaskCanvasRef.current.getContext('2d');
-  
-  // Get the pixel data at the (x, y) coordinate
-  // We use 1x1 size to get just the specific pixel clicked
-  const pixelData = ctx.getImageData(x, y, 1, 1).data;
-  
-  // pixelData[3] is the Alpha (transparency) channel (0-255)
-  // If alpha > 0, it means it's a "visible" (white) part of your mask
-  return pixelData[3] > 0;
-};
+    if (!zoomMaskCanvasRef.current) return false;
+    const ctx = zoomMaskCanvasRef.current.getContext('2d');
+    const pixelData = ctx.getImageData(x, y, 1, 1).data;
+    return pixelData[3] > 0;
+  };
 
   const generateNewDot = (currentFullSpots, currentDots) => {
     if (!canvasRef.current) return null;
@@ -195,11 +180,9 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-
     if (isAreaOnZoomMask(x, y)) {
-      if (isZoomed) {
-        setIsZoomed(false);
-      } else {
+      if (isZoomed) setIsZoomed(false);
+      else {
         setZoomPos({ x: e.clientX, y: e.clientY });
         setIsZoomed(true);
       }
@@ -211,12 +194,10 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const scale = Math.max(canvas.width / bgRef.current.width, canvas.height / bgRef.current.height);
     const x = (canvas.width / 2) - (bgRef.current.width / 2) * scale;
     const y = (canvas.height / 2) - (bgRef.current.height / 2) * scale;
     ctx.drawImage(bgRef.current, x, y, bgRef.current.width * scale, bgRef.current.height * scale);
-
     const buffer = document.createElement('canvas');
     buffer.width = canvas.width;
     buffer.height = canvas.height;
@@ -231,14 +212,8 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   }, [dots, fullSpots, imageLoaded]);
 
   const btnStyle = (bg) => ({
-    padding: '14px 22px',
-    cursor: 'pointer',
-    background: bg,
-    color: 'white',
-    border: 'none',
-    borderRadius: '50px',
-    fontWeight: 'bold',
-    boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+    padding: '14px 22px', cursor: 'pointer', background: bg, color: 'white',
+    border: 'none', borderRadius: '50px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
   });
 
   return (
@@ -249,47 +224,18 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
       <div style={{ width: '150%', height: '70%', transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)', transformOrigin: `${zoomPos.x}px ${zoomPos.y}px`, transform: isZoomed ? 'scale(1.2)' : 'scale(1)' }}>
         <canvas ref={canvasRef} style={{ display: 'block' }} />
         {isZoomed && (
-  <div style={{
-    position: 'absolute',
-    top: zoomPos.y,
-    left: zoomPos.x,
-    transform: 'scale(0.6) translate(-90%, -90%)', 
-    pointerEvents: 'auto',
-    display: 'flex',
-    gap: '275px',
-    padding: '130px', // Increased padding to ensure button has space
-    borderRadius: '250px',
-    zIndex: 9999 // Ensure it is on top
-  }}>
-    {/* Exit Button - Styled as red square with white cross */}
-    <button 
-      onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
-      style={{
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
-        width: '40px',
-        height: '40px',
-        background: 'red',
-        border: 'none',
-        cursor: 'pointer',
-        padding: 0,
-        zIndex: 10000
-      }}
-    >
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(45deg)' }} />
-        <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(-45deg)' }} />
-      </div>
-    </button>
+          <div style={{
+            position: 'absolute', top: zoomPos.y, left: zoomPos.x, transform: 'scale(0.6) translate(-90%, -90%)', 
+            pointerEvents: 'auto', display: 'flex', gap: '275px', padding: '130px', borderRadius: '250px', zIndex: 9999
+          }}>
+            <button onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }} style={{ position: 'absolute', top: '20px', right: '20px', width: '40px', height: '40px', background: 'red', border: 'none', cursor: 'pointer', zIndex: 10000 }}>
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(45deg)' }} />
+                <div style={{ position: 'absolute', width: '25px', height: '3px', background: 'white', top: '18.5px', left: '7.5px', transform: 'rotate(-45deg)' }} />
+              </div>
+            </button>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: '#3d2616' }}>
-              <a href="/about" style={{ display: 'block', margin: 0 }}>
-  <img 
-    src="/title4.png" 
-    alt="About Us" 
-    style={{ width: '315px', height: 'auto', display: 'block' }} 
-  />
-</a>
+              <a href="/about" style={{ display: 'block', margin: 0 }}><img src="/title4.png" alt="About" style={{ width: '315px', height: 'auto' }} /></a>
               <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
               <div style={{ marginTop: '40px', background: 'rgba(255,255,255,0.85)', borderRadius: '12px', color: '#552f1a', textAlign: 'center', pointerEvents: 'none'}}>
                 <div style={{ fontSize: '1.1rem' }}>Spots: {fullSpots.length}</div>
@@ -297,9 +243,11 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', justifyContent: 'center', paddingBottom:'15px' }}>
-              {['Listen', 'Speak'].map((item) => (
-                <div key={item} style={{ fontSize:'1.8rem', padding: '15px 25px', borderRadius: '8px', cursor: 'pointer' }}>{item}</div>
-              ))}
+              {/* "Listen" Word Hyperlink [cite: 99] */}
+              <Link to="/girafforum" onClick={(e) => e.stopPropagation()} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div style={{ fontSize:'1.8rem', padding: '15px 25px', borderRadius: '8px', cursor: 'pointer' }}>Listen</div>
+              </Link>
+              <div style={{ fontSize:'1.8rem', padding: '15px 25px', borderRadius: '8px', cursor: 'pointer' }}>Speak</div>
             </div>
           </div>
         )}
@@ -313,4 +261,16 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   );
 };
 
-export default GiraffeAvatar;
+// Main Routing Logic [cite: 101]
+const AppWrapper = (props) => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<GiraffeAvatar {...props} />} />
+      <Route path="/girafforum" element={<Girafforum backgroundUrl={props.backgroundUrl} />} />
+      {/* ADD THIS LINE to fix the "No routes matched" error */}
+      <Route path="/about" element={<GiraffeAvatar {...props} />} /> 
+    </Routes>
+  </BrowserRouter>
+);
+
+export default AppWrapper;
