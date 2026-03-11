@@ -252,7 +252,7 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
   }}>
     {/* LEFT COLUMN: Menu */}
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: '#3d2616' }}>
-      <h1 style={{ fontFamily: 'Etna, serif', fontSize: '3rem', margin: 0 }}>Twinga</h1>
+      <h1 style={{ fontFamily: 'Etna, serif', fontSize: '3.5rem', margin: 0 }}>Twinga</h1>
       <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
       
       {/* Moved Counter Here */}
@@ -263,10 +263,11 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
     </div>
 
     {/* RIGHT COLUMN: Interactive Tools */}
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', justifyContent: 'center' }}>
-      {['GIRAFFORUM', 'Express Need', 'Request', 'Thank'].map((item) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '50px', justifyContent: 'center', paddingBottom:'15px' }}>
+      {['Listen', 'Speak'].map((item) => (
         <div key={item} style={{ 
-          padding: '10px 20px', 
+            fontSize:'1.8rem',
+          padding: '15px 25px', 
           //border: '1px solid #3d2616', 
           borderRadius: '8px', 
           cursor: 'pointer' 
