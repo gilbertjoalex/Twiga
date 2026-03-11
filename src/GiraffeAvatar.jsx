@@ -236,35 +236,50 @@ const GiraffeAvatar = ({ maskUrl, backgroundUrl, cursorImgUrl }) => {
                 <canvas ref={canvasRef} style={{ display: 'block' }} />
 
                 {/* Zoomed-in Components */}
-                {isZoomed && (
-                    <div style={{
-                        position: 'absolute',
-                        top: zoomPos.y,
-                        left: zoomPos.x,
-                        transform: 'scale(0.4)', 
-                        pointerEvents: 'auto'
-                    }}>
-                        {/* Placeholder for Menu */}
-                        <div style={{ background: 'white', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}>
-                            Menu Component
-                        </div>
-                        {/* Placeholder for Interactive Component */}
-                        <div style={{ background: 'rgba(255,255,255,0.9)', padding: '10px', borderRadius: '8px' }}>
-                            Interactive Tool
-                        </div>
-                    </div>
-                )}
+                {/* Zoomed-in Components */}
+{isZoomed && (
+  <div style={{
+    position: 'absolute',
+    top: zoomPos.y,
+    left: zoomPos.x,
+    transform: 'scale(0.6) translate(-90%, -90%)', 
+    pointerEvents: 'auto',
+    display: 'flex',            // Enable Flexbox
+    gap: '275px',                // Space between columns
+    //background: 'rgba(255, 255, 255, 0.95)',
+    padding: '0px',
+    borderRadius: '250px'
+  }}>
+    {/* LEFT COLUMN: Menu */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', color: '#3d2616' }}>
+      <h1 style={{ fontFamily: 'Etna, serif', fontSize: '3rem', margin: 0 }}>Twinga</h1>
+      <div style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Profile</div>
+      
+      {/* Moved Counter Here */}
+      <div style={{ marginTop: '20px', background: 'rgba(255,255,255,0.85)', paddingTop: '10px', borderRadius: '12px', color: '#552f1a', textAlign: 'left', pointerEvents: 'none'}}>
+        <div style={{ fontSize: '1.1rem' }}>Spots: {fullSpots.length}</div>
+        <div style={{ fontSize: '0.8rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
+      </div>
+    </div>
+
+    {/* RIGHT COLUMN: Interactive Tools */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', justifyContent: 'center' }}>
+      {['Express Need', 'Request', 'Thank'].map((item) => (
+        <div key={item} style={{ 
+          padding: '10px 20px', 
+          border: '1px solid #3d2616', 
+          borderRadius: '8px', 
+          cursor: 'pointer' 
+        }}>
+          {item}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
             </div>
 
             {/* Standard UI Overlay */}
-            <div style={{ 
-                position: 'absolute', top: '20px', right: '20px', 
-                background: 'rgba(255,255,255,0.85)', padding: '15px', 
-                borderRadius: '12px', color: '#3d2616', textAlign: 'right', pointerEvents: 'none'
-            }}>
-                <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>Spots: {fullSpots.length}</div>
-                <div style={{ fontSize: '0.9rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
-            </div>
 
             <div style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', gap: '12px', zIndex: 10 }}>
                 <button onClick={(e) => { e.stopPropagation(); handleSpotClick(); }} style={btnStyle('#3d2616')}>Spot</button>
