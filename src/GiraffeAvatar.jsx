@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Girafforum from './Girafforum';
 import AboutPage from './AboutPage';
 import ProfilePage from './ProfilePage';
+import Layout from './Layout';
 
 /**
  * NEW COMPONENT: Girafforum
@@ -237,7 +238,7 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
             zIndex: 9999,
             pointerEvents: 'auto'
           }}>
-            <div style={{ margin: '20px 0 0px 20px', display: 'flex', flexDirection: 'column', paddingTop: '0px', gap: '0px', color: '#3d2616' }}>
+            <div style={{ margin: '20px 0 0px 60px', display: 'flex', flexDirection: 'column', paddingTop: '0px', gap: '0px', color: '#3d2616' }}>
               <button 
                 onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
                 style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
@@ -282,13 +283,15 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
 // Main Routing Logic [cite: 101]
 const AppWrapper = (props) => (
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<GiraffeAvatar {...props} />} />
-      <Route path="/girafforum" element={<Girafforum backgroundUrl={props.backgroundUrl} />} />
-      {/* Ensure these routes point to your new separate components */}
-      <Route path="/about" element={<AboutPage backgroundUrl={props.backgroundUrl} />} />
-<Route path="/profile" element={<ProfilePage backgroundUrl={props.backgroundUrl} />} />
-    </Routes>
+    {/* Pass your URLs here so they are used globally */}
+    <Layout backgroundUrl={props.backgroundUrl} maskUrl={props.maskUrl}>
+      <Routes>
+        <Route path="/" element={<GiraffeAvatar {...props} />} />
+        <Route path="/girafforum" element={<Girafforum {...props} />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Routes>
+    </Layout>
   </BrowserRouter>
 );
 
