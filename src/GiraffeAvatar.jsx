@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Girafforum from './Girafforum';
+import AboutPage from './AboutPage';
+import ProfilePage from './ProfilePage';
 
 /**
  * NEW COMPONENT: Girafforum
@@ -224,78 +226,56 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
       )}
       <div style={{ width: '150%', height: '70%', transition: 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)', transformOrigin: `${zoomPos.x}px ${zoomPos.y}px`, transform: isZoomed ? 'scale(1.2)' : 'scale(1)' }}>
         <canvas ref={canvasRef} style={{ display: 'block' }} />
-        {isZoomed && (
-  <div style={{
-    position: 'fixed', // Change to fixed to fill the viewport
-    top: -200,
-    left: -350,
-    width: '100vw',
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'none', // Centers the menu horizontally
-    alignItems: 'center',     // Centers the menu vertically
-    backgroundColor: 'none', // Optional: Dim the background
-    zIndex: 9999,
-    pointerEvents: 'auto'
-  }}>
-     
-    <div style={{
-      position: 'relative',
-      background: 'none', // Give the menu a background
-      padding: '200px',
-      borderRadius: '10px',
-      display: 'flex',
-      gap: '0px',
-      maxWidth: '120vw', // Ensures it never exceeds screen width
-      maxHeight: '120vh', // Ensures it never exceeds screen height
-      overflow: 'auto'   // Adds scroll if menu is too tall
-    }}>
-    
- 
-</div>
-            <div style={{ margin: '50px 0 0px 20px', display: 'flex', flexDirection: 'column', paddingTop: '40px', gap: '0px', color: '#3d2616' }}>
+       {isZoomed && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            zIndex: 9999,
+            pointerEvents: 'auto'
+          }}>
+            <div style={{ margin: '20px 0 0px 20px', display: 'flex', flexDirection: 'column', paddingTop: '0px', gap: '0px', color: '#3d2616' }}>
               <button 
-  onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
-  style={{ 
-    background: 'transparent', 
-    border: 'none', 
-    padding: 0, 
-    cursor: 'pointer' 
-  }}
->
-      <img src="/title7.png" alt="About" style={{margin: '0px 0 -35px 0',width: '315px', height: 'auto' }} /></button>
-              <a href="/" style={{ display: 'block' }}> 
-              <div style={{ margin: '10px 20px 0px 40px', fontWeight: 'bold', fontSize: '1rem' }}>About Us</div>
-              </a>
-              <a href="/" style={{ display: 'block'}}> 
-              <div style={{ margin: '10px 20px 50px 40px', fontWeight: 'bold', fontSize: '1rem' }}>Profile</div>
-              </a>
+                onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
+                style={{ background: 'transparent', border: 'none', padding: 0, cursor: 'pointer' }}
+              >
+                <img src="/title7.png" alt="About" style={{margin: '20px 0 -20px 0',width: '315px', height: 'auto' }} />
+              </button>
+
+              <Link to="/about" style={{ textDecoration: 'none', width: 'fit-content' }}> 
+                <div style={{ color: 'white', background: 'rgb(62, 102, 233)', borderRadius: '6px', margin: '30px 20px 0px 40px', fontSize: '0.9rem', padding: '2px 8px' }}>About us</div>
+              </Link>
+
+              <Link to="/profile" style={{ textDecoration: 'none', width: 'fit-content' }}> 
+                <div style={{ color: 'white', background: 'rgb(62, 102, 233)', borderRadius: '6px', margin: '10px 20px 50px 40px', fontSize: '0.9rem', padding: '2px 8px' }}>Profile</div>
+              </Link>
               
               <div style={{background: 'rgba(234, 209, 109, 0.53)', borderRadius: '12px', color: '#552f1a', textAlign: 'left', pointerEvents: 'none', width: 'fit-content', margin: '40px 0 0 40px', padding: '2px 2px'}}>
                 <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>Spots: {fullSpots.length}</div>
                 <div style={{ fontWeight: 'bold', fontSize: '0.6rem' }}>Total Dots: {fullSpots.reduce((acc, s) => acc + s.cluster.length, 0) + dots.length}</div>
               </div>
             </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0px', padding: '0px', paddingTop:'100px'}}>
-              {/* "Listen" Word Hyperlink [cite: 99] */}
               <Link to="/girafforum" onClick={(e) => e.stopPropagation()} style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div style={{margin:'40px 40px 0 60px', background: 'rgba(234, 231, 222, 0.41)', fontSize:'1.8rem', padding: '0px 10px', borderRadius: '8px', cursor: 'pointer'}}>Listen</div>
+                <div style={{margin:'70px 40px 0 60px', background: 'rgba(234, 231, 222, 0.41)', fontSize:'1.8rem', padding: '0px 10px', borderRadius: '8px', cursor: 'pointer'}}>Listen</div>
               </Link>
               <div style={{ margin:'40px 40px 0 60px', background: 'rgba(234, 231, 222, 0.41)', fontSize:'1.8rem', padding: '0px 10px', borderRadius: '8px', cursor: 'pointer' }}>Speak</div>
-            
-            </div>
-          </div>
-        
-    
+            </div> 
+          </div> 
         )}
-      </div>
+      </div> 
+
+      {/* Footer buttons div (removed the stray '(' that caused the error) */}
       <div style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', gap: '12px', zIndex: 10 }}>
         <button onClick={(e) => { e.stopPropagation(); handleSpotClick(); }} style={btnStyle('#3d2616')}>Spot</button>
         <button onClick={(e) => { e.stopPropagation(); handleResetDistribution(); }} style={btnStyle('#5c3d2e')}>Reset Distribution</button>
         <button onClick={(e) => { e.stopPropagation(); setFullSpots([]); setDots([]); }} style={btnStyle('#8b0000')}>Clear All</button>
       </div>
     </div>
-    
   );
 };
 
@@ -305,8 +285,9 @@ const AppWrapper = (props) => (
     <Routes>
       <Route path="/" element={<GiraffeAvatar {...props} />} />
       <Route path="/girafforum" element={<Girafforum backgroundUrl={props.backgroundUrl} />} />
-      {/* ADD THIS LINE to fix the "No routes matched" error */}
-      <Route path="/about" element={<GiraffeAvatar {...props} />} /> 
+      {/* Ensure these routes point to your new separate components */}
+      <Route path="/about" element={<AboutPage backgroundUrl={props.backgroundUrl} />} />
+<Route path="/profile" element={<ProfilePage backgroundUrl={props.backgroundUrl} />} />
     </Routes>
   </BrowserRouter>
 );
