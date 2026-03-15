@@ -160,9 +160,9 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
   const handleSpotClick = () => {
     if (!imageLoaded) return; //[cite: 33]
     if (dots.length === 0) {
-      const weights = [5, 5, 5, 6, 8, 8, 9, 10, 10, 11, 12, 12, 12, 13, 13, 15]; //[cite: 34]
+      const weights = [4, 4, 5, 5, 5, 6, 8, 8, 9, 10, 10, 11, 12, 12, 12, 13, 13, 15]; //[cite: 34]
       setTargetFragments(weights[Math.floor(Math.random() * weights.length)]); //[cite: 35]
-      setCurrentClusterRadius(Math.floor(Math.random() * 7) + 25);
+      setCurrentClusterRadius(Math.floor(Math.random() * 4) + 25);
     }
     const newDot = generateNewDot(fullSpots, dots); //[cite: 35]
     if (!newDot && dots.length > 0) {
@@ -204,13 +204,21 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
     const y = e.clientY - rect.top;
 
     if (isAreaOnZoomMask(x, y)) {
-      if (isZoomed) {
-        setIsZoomed(false); //[cite: 40]
-      } else {
-        setZoomPos({ x: e.clientX, y: e.clientY }); //[cite: 41]
-        setIsZoomed(true);
-        setSpeechBubble({ visible: true, text: "Thank you!" });
-        setTimeout(() => setSpeechBubble({ visible: false, text: "" }), 3000);
+  if (isZoomed) {
+    setIsZoomed(false);
+  } else {
+    // Define options for when they click the head
+    const gratitudes = ["Thank you!", "Nomnomnom..", "Thanks!", "Needed that.", "*burp*"];
+    const randomGratitude = gratitudes[Math.floor(Math.random() * gratitudes.length)];
+
+    setZoomPos({ x: e.clientX, y: e.clientY });
+    setIsZoomed(true);
+    
+    // Set the randomized "Thank you" text
+    setSpeechBubble({ visible: true, text: randomGratitude });
+    
+    // Hide after 8 seconds
+    setTimeout(() => setSpeechBubble({ visible: false, text: "" }), 3000);
       } }else {
       // If clicking elsewhere, we can still trigger the bubble manually if desired
       if (!isZoomed && !speechBubble.visible) {
@@ -283,7 +291,7 @@ const GiraffeAvatar = ({ zoomMaskUrl, maskUrl, backgroundUrl, cursorImgUrl }) =>
                 <img src="/title7.png" alt="About" style={{margin: '20px 0 -20px 0', width: '315px', height: 'auto' }} />
               </button>
               <Link to="/about" style={{ textDecoration: 'none', width: 'fit-content' }}> 
-                <div style={{ color: 'white', background: 'rgb(62, 102, 233)', borderRadius: '6px', margin: '30px 20px 0px 40px', fontSize: '0.9rem', padding: '2px 8px' }}>About us</div>
+                <div style={{ color: 'white', background: 'rgb(62, 102, 233)', borderRadius: '6px', margin: '30px 20px 0px 40px', fontSize: '0.9rem', padding: '2px 8px' }}>Huh?</div>
               </Link>
               <Link to="/profile" style={{ textDecoration: 'none', width: 'fit-content' }}> 
                 <div style={{ color: 'white', background: 'rgb(62, 102, 233)', borderRadius: '6px', margin: '10px 20px 50px 40px', fontSize: '0.9rem', padding: '2px 8px' }}>Profile</div>
